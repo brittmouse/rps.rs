@@ -1,3 +1,5 @@
+use std::io;
+
 use rand::Rng;
 
 fn main() {
@@ -5,6 +7,19 @@ fn main() {
     let mut tie = 0;
     let mut lose = 0;
     println!("## ROCK | PAPER | SCISSORS ##");
+    loop {
+        println!("Choose your fighter!");
+        let mut player_in = String::new();
+        io::stdin()
+            .read_line(&mut player_in)
+            .expect("Failure to read line");
+        if player_in != "rock" && player_in != "paper" && player_in != "scissors" {
+            println!("Invalid input, please try again.");
+            continue;
+        } else {
+            let result = play_round(player_in, get_computer_choice());
+        }
+    }
 }
 
 fn get_computer_choice() -> String {
@@ -40,4 +55,8 @@ fn play_round(player_selection: String, computer_selection: String) -> String {
         );
         String::from("L")
     }
+}
+
+fn is_game_over(w: i32, l: i32) -> bool {
+    w == 5 || l == 5
 }
