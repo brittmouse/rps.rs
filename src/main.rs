@@ -1,6 +1,5 @@
-use std::io;
-
 use rand::Rng;
+use std::io;
 
 fn main() {
     let mut win = 0;
@@ -13,12 +12,30 @@ fn main() {
         io::stdin()
             .read_line(&mut player_in)
             .expect("Failure to read line");
+        player_in = player_in.trim().to_lowercase(); // Avoiding "Rock" as a failed input
         if player_in != "rock" && player_in != "paper" && player_in != "scissors" {
             println!("Invalid input, please try again.");
             continue;
-        } else {
-            let result = play_round(player_in, get_computer_choice());
         }
+        let result = play_round(player_in, get_computer_choice());
+        if result == "W" {
+            win += 1;
+        } else if result == "L" {
+            lose += 1;
+        } else {
+            tie += 1;
+        }
+
+        println!("Wins: {}\nLosses: {}\nTies: {}", win, lose, tie);
+
+        if is_game_over(win, lose) {
+            break;
+        }
+    }
+    if win > lose {
+        println!("Congratulations!");
+    } else {
+        println!("Better luck next time...");
     }
 }
 
